@@ -19,6 +19,7 @@ import com.yunfan.douyincontrol.dataStore
 import com.yunfan.douyincontrol.ui.component.QuestionCard
 import com.yunfan.douyincontrol.ui.theme.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,8 +47,11 @@ fun StudyScreen(navController: NavController, app: App, subject: String) {
         }
     }
 
+    // 读取家长设置的年级（只读一次）
     LaunchedEffect(subject) {
-        viewModel.startStudy(subject, "grade1")
+        val prefs = app.dataStore.data.first()
+        val grade = prefs[androidx.datastore.preferences.core.stringPreferencesKey("current_grade")] ?: "grade1"
+        viewModel.startStudy(subject, grade)
     }
 
     Scaffold(

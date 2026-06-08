@@ -1,56 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
+<head><meta charset="utf-8"><title>图标预览</title>
 <style>
-  body { background: #f0f0f0; display: flex; flex-direction: column; align-items: center; padding: 40px; font-family: Arial, sans-serif; }
-  h2 { color: #333; margin-bottom: 30px; }
-  .icon-wrapper {
-    width: 192px; height: 192px; border-radius: 40px;
+  body { background:#f0f0f0; display:flex; flex-direction:column; align-items:center; padding:40px; font-family:Arial }
+  .icon {
+    width:192px; height:192px;
     background: linear-gradient(135deg, #667EEA, #764BA2);
-    display: flex; align-items: center; justify-content: center;
+    border-radius: 40px;
+    display:flex; align-items:center; justify-content:center;
     box-shadow: 0 8px 32px rgba(102,126,234,0.4);
-    position: relative;
-    margin-bottom: 30px;
+    margin-bottom:20px;
   }
-  svg { width: 140px; height: 140px; }
-  .desc { color: #666; font-size: 14px; text-align: center; line-height: 1.8; }
-  .colors { display: flex; gap: 8px; margin: 20px 0; }
-  .color-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ccc; }
+  svg { width:140px; height:140px; }
+  .mask-circle { border-radius:50%; overflow:hidden; width:192px; height:192px; }
+  .note { color:#666; font-size:14px; text-align:center; line-height:1.8; }
 </style>
 </head>
 <body>
-  <h2>🎨 云帆乐园 — App 图标（帆船版）</h2>
-  <div class="icon-wrapper">
-    <svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
-      <!-- 云朵 -->
-      <path fill="#FFFFFF" d="M34,44 C34,36 42,32 48,36 C52,28 66,28 70,36 C76,32 82,38 80,46 C84,48 84,56 78,58 L36,58 C30,56 28,48 34,44Z"/>
-      <!-- 小星星（云朵左上方） -->
-      <path fill="#6BCB77" d="M36,22 L37,26 L41,26 L38,29 L39,33 L36,30 L33,33 L34,29 L31,26 L35,26Z"/>
-      <!-- 桅杆 -->
-      <path fill="#8B4513" d="M54,58 L54,88 L56,88 L56,58Z"/>
-      <!-- 主帆 -->
-      <path fill="#FF6B6B" d="M56,60 L80,74 L56,84Z"/>
-      <!-- 船身 -->
-      <path fill="#FFFFFF" d="M28,84 L36,82 L54,82 L72,82 L80,84 L72,92 L36,92Z"/>
-      <!-- 船身阴影 -->
-      <path fill="#667EEA" fill-opacity="0.3" d="M36,92 L72,92 L80,84 L72,82 L54,82 L36,82 L28,84Z"/>
-      <!-- 波纹 -->
-      <path fill="none" stroke="#74B9FF" stroke-width="2" d="M16,90 Q20,86 24,90 Q28,94 32,90 Q36,86 40,90 Q44,94 48,90 Q52,86 56,90 Q60,94 64,90 Q68,86 72,90 Q76,94 80,90 Q84,86 88,90 Q92,94 96,90"/>
+  <h2>🎨 图标设计（安全区内）</h2>
+  <div class="icon">
+    <svg viewBox="0 0 108 108">
+      <path fill="#FFFFFF" d="M36,40 C36,34 42,30 48,34 C52,28 62,28 66,34 C72,30 78,36 76,42 C80,44 80,50 74,52 L40,52 C34,50 32,44 36,40Z"/>
+      <path fill="#6BCB77" d="M34,24 L35,28 L39,28 L36,31 L37,35 L34,32 L31,35 L32,31 L29,28 L33,28Z"/>
+      <path fill="#8B4513" d="M54,52 L54,86 L56,86 L56,52Z"/>
+      <path fill="#FF6B6B" d="M56,54 L80,72 L56,82Z"/>
+      <path fill="#FFFFFF" d="M32,82 L40,80 L54,80 L68,80 L76,82 L68,90 L40,90Z"/>
+      <path fill="#667EEA" fill-opacity="0.3" d="M40,90 L68,90 L76,82 L68,80 L54,80 L40,80 L32,82Z"/>
+      <path fill="none" stroke="#74B9FF" stroke-width="2" d="M28,88 Q32,84 36,88 Q40,92 44,88 Q48,84 52,88 Q56,92 60,88 Q64,84 68,88 Q72,92 76,88 L80,84"/>
     </svg>
   </div>
-
-  <div class="colors">
-    <div class="color-dot" style="background:#667EEA" title="主色"></div>
-    <div class="color-dot" style="background:#FF6B6B" title="主帆红"></div>
-    <div class="color-dot" style="background:#6BCB77" title="星星绿"></div>
-    <div class="color-dot" style="background:#74B9FF" title="波纹蓝"></div>
-  </div>
-
-  <div class="desc">
-    ☁️ 云朵 — 云帆<br>
-    ⛵ 帆船 — 乐园<br>
-    🌊 波纹 — 扬帆起航
-  </div>
+  <p>🔵 蓝色圆形是裁剪区域，所有元素都在安全区内</p>
+  <p>☁️ 云朵 ⭐星星 ⛵帆船 🌊波纹</p>
 </body>
 </html>

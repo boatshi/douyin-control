@@ -177,7 +177,7 @@ fun HomeScreen(navController: NavController, app: App) {
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    HomeButton(emoji = "❌", label = "错题本", onClick = {
+                    HomeButton(emoji = "📖", label = "错题本", onClick = {
                         navController.navigate(Screen.WrongBook.route)
                     }, modifier = Modifier.weight(1f))
                     HomeButton(emoji = "🏆", label = "学习统计", onClick = {
