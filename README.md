@@ -179,5 +179,4 @@ git checkout douyin-control
 
 | 分支 | 内容 |
 |------|------|
-| `master` | 🌊 云帆乐园（PHP 学习App） |
 | `douyin-control` | 📱 抖音管控 App（当前项目） |
