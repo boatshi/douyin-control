@@ -1,11 +1,7 @@
 package com.yunfan.douyincontrol.ui.screen
 
-import android.annotation.SuppressLint
+import android.util.Log
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -13,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -21,9 +18,10 @@ import com.yunfan.douyincontrol.App
 import com.yunfan.douyincontrol.ui.component.TimerView
 import com.yunfan.douyincontrol.ui.theme.*
 import kotlinx.coroutines.delay
+import org.mozilla.geckoview.GeckoSession
+import org.mozilla.geckoview.GeckoSession.ProgressDelegate
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun DouyinScreen(navController: NavController, app: App) {
     val pointsRepository = app.pointsRepository
@@ -36,10 +34,27 @@ fun DouyinScreen(navController: NavController, app: App) {
     var costPerMinute by remember { mutableIntStateOf(10) }
     var shouldExit by remember { mutableStateOf(false) }
     var timeUpExit by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
+    // 优先使用预加载的 Session，没有才新建
+    val isPreloaded = remember { mutableStateOf(false) }
+    val geckoSession = remember {
+        app.takePreloadedSession()?.also {
+            Log.i("GeckoView", "⚡ 使用预加载的 Session，秒开！")
+            isPreloaded.value = true
+        } ?: run {
+            Log.i("GeckoView", "⏳ 没有预加载，新建 Session")
+            GeckoSession()
+        }
+    }
 
-    // 执行扣分和退出（在协程中执行）
+    // 页面销毁时强制关闭 Session，停掉声音
+    DisposableEffect(Unit) {
+        onDispose { geckoSession.close() }
+    }
+
     LaunchedEffect(shouldExit) {
         if (!shouldExit) return@LaunchedEffect
+        geckoSession.close()
         if (enterTime > 0 && totalSeconds > 0) {
             val elapsedMs = System.currentTimeMillis() - enterTime
             val elapsedMinutes = (elapsedMs / 60000).toInt().coerceAtLeast(1)
@@ -57,7 +72,6 @@ fun DouyinScreen(navController: NavController, app: App) {
         navController.popBackStack()
     }
 
-    // 启动：检查积分但不扣
     LaunchedEffect(Unit) {
         val balance = pointsRepository.getBalance()
         val rule = pointsRepository.getRule("cost_per_minute")
@@ -79,20 +93,17 @@ fun DouyinScreen(navController: NavController, app: App) {
         isReady = true
     }
 
-    // 倒计时
     LaunchedEffect(remainingSeconds, isReady) {
         if (!isReady || remainingSeconds <= 0) return@LaunchedEffect
         while (remainingSeconds > 0) {
             delay(1000)
             remainingSeconds -= 1
         }
-        // 时间到了，触发退出扣分
         timeUpExit = true
         dialogMessage = "时间到！去做题赚积分吧！"
         showDialog = true
     }
 
-    // 弹窗
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { shouldExit = true },
@@ -123,85 +134,88 @@ fun DouyinScreen(navController: NavController, app: App) {
             )
         }
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier.fillMaxSize().padding(padding).background(BackgroundLight)
         ) {
             if (isReady) {
-                TimerView(
-                    remainingSeconds = remainingSeconds,
-                    totalSeconds = totalSeconds,
-                    modifier = Modifier.padding(16.dp)
-                )
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("加载中...", fontSize = 16.sp, color = TextSecondary)
+                Column(modifier = Modifier.fillMaxSize()) {
+                    TimerView(
+                        remainingSeconds = remainingSeconds,
+                        totalSeconds = totalSeconds,
+                        modifier = Modifier.padding(16.dp)
+                    )
+
+                    AndroidView(
+                        factory = { context ->
+                            org.mozilla.geckoview.GeckoView(context).apply {
+                                layoutParams = ViewGroup.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT
+                                )
+                                if (isPreloaded.value) {
+                                    Log.i("GeckoView", "⚡ Session 已预加载，直接显示")
+                                    isLoading = false
+                                } else {
+                                    Log.i("GeckoView", "⏳ 非预加载 Session，开始加载")
+                                    geckoSession.open(app.geckoRuntime)
+                                    geckoSession.settings.userAgentOverride = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                                    geckoSession.progressDelegate = MyProgressDelegate { isLoading = it }
+                                    geckoSession.loadUri("https://www.douyin.com")
+                                    isLoading = true
+                                }
+                                setSession(geckoSession)
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
 
-            AndroidView(
-                factory = { context ->
-                    WebView(context).apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        // 强制硬件加速
-                        setLayerType(android.view.View.LAYER_TYPE_HARDWARE, null)
-                        settings.apply {
-                            javaScriptEnabled = true
-                            domStorageEnabled = true
-                            databaseEnabled = true
-                            val isHuawei = android.os.Build.MANUFACTURER.lowercase().contains("huawei") ||
-                                    android.os.Build.BRAND.lowercase().contains("huawei")
-                            // 所有设备统一用桌面版UA，华为WebView对桌面版兼容更好
-                            userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-                            loadWithOverviewMode = true
-                            useWideViewPort = true
-                            if (isHuawei) {
-                                // 华为浏览器引擎兼容
-                                layoutAlgorithm = android.webkit.WebSettings.LayoutAlgorithm.NORMAL
-                            }
-                            cacheMode = android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK
-                            mediaPlaybackRequiresUserGesture = false
-                            builtInZoomControls = false
-                            displayZoomControls = false
-                            setSupportMultipleWindows(false)
-                            javaScriptCanOpenWindowsAutomatically = false
-                            layoutAlgorithm = android.webkit.WebSettings.LayoutAlgorithm.NARROW_COLUMNS
-                            blockNetworkLoads = false
+            if (isLoading && isReady) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.95f)),
+                        modifier = Modifier.padding(32.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(32.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("⏳", fontSize = 40.sp)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text("正在加载抖音...", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = TextPrimary)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("GeckoView 首次加载较慢", fontSize = 14.sp, color = TextSecondary)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(32.dp),
+                                strokeWidth = 3.dp,
+                                color = PurpleStart
+                            )
                         }
-                        webViewClient = object : WebViewClient() {
-                            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                                val url = request?.url?.toString() ?: return false
-                                return if (url.startsWith("http")) { false } else { true }
-                            }
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                super.onPageFinished(view, url)
-                                // 页面加载完成后修正viewport，确保内容适配屏幕
-                                view?.evaluateJavascript("""
-                                    (function(){
-                                        var meta = document.querySelector('meta[name="viewport"]');
-                                        if (!meta) {
-                                            meta = document.createElement('meta');
-                                            meta.name = 'viewport';
-                                            document.head.appendChild(meta);
-                                        }
-                                        meta.content = 'width=device-width, initial-scale=0.5, maximum-scale=5.0';
-                                        document.body.style.zoom = '0.8';
-                                        document.documentElement.style.zoom = '0.8';
-                                    })();
-                                """.trimIndent(), null)
-                            }
-                        }
-                        webChromeClient = WebChromeClient()
-                        loadUrl("https://www.douyin.com")
                     }
-                },
-                modifier = Modifier.fillMaxSize()
-            )
+                }
+            }
+
+            if (!isReady && !showDialog) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("检查积分中...", fontSize = 16.sp, color = TextSecondary)
+                }
+            }
         }
     }
+}
+
+private class MyProgressDelegate(private val onLoadingChange: (Boolean) -> Unit) : ProgressDelegate {
+    override fun onPageStop(session: GeckoSession, success: Boolean) { onLoadingChange(false) }
+    override fun onPageStart(session: GeckoSession, uri: String) { onLoadingChange(true) }
+    override fun onProgressChange(session: GeckoSession, progress: Int) {}
+    override fun onSecurityChange(session: GeckoSession, securityInfo: GeckoSession.ProgressDelegate.SecurityInformation) {}
+    override fun onSessionStateChange(session: GeckoSession, sessionState: GeckoSession.SessionState) {}
 }

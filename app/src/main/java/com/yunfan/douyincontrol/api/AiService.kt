@@ -53,6 +53,9 @@ class AiService(
         grade: String,
         count: Int = 5
     ): List<AiQuestion> = withContext(Dispatchers.IO) {
+        if (apiKey.isBlank() || apiUrl.contains("your-proxy")) {
+            throw IOException("AI 未配置，请先在家长设置 → API配置 中填入正确的接口地址和密钥")
+        }
         val gradeNames = mapOf(
             "bigclass" to "幼儿园大班",
             "grade1" to "小学一年级",

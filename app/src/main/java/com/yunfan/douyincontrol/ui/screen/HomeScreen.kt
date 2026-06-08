@@ -29,28 +29,12 @@ fun HomeScreen(navController: NavController, app: App) {
     }
     val balance by viewModel.balance.collectAsState()
 
-    var isLongPressing by remember { mutableStateOf(false) }
     var showPasswordDialog by remember { mutableStateOf(false) }
-    var longPressProgress by remember { mutableStateOf(0f) }
     var showSubjectDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.refreshBalance()
-    }
-
-    LaunchedEffect(isLongPressing) {
-        if (isLongPressing) {
-            longPressProgress = 0f
-            while (longPressProgress < 1f) {
-                delay(100)
-                longPressProgress += 0.02f
-            }
-            showPasswordDialog = true
-            isLongPressing = false
-            longPressProgress = 0f
-        } else {
-            longPressProgress = 0f
-        }
+        app.preloadDouyin()  // 后台预加载抖音
     }
 
     if (showPasswordDialog) {
@@ -203,17 +187,14 @@ fun HomeScreen(navController: NavController, app: App) {
 
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    "[ 长按进入家长设置 ]",
+                    "🔒 家长设置",
                     fontSize = 14.sp,
                     color = TextSecondary,
                     modifier = Modifier
                         .padding(bottom = 24.dp)
                         .pointerInput(Unit) {
                             detectTapGestures(
-                                onLongPress = { isLongPressing = true },
-                                onPress = {
-                                    try { awaitRelease() } finally { isLongPressing = false }
-                                }
+                                onTap = { showPasswordDialog = true }
                             )
                         }
                 )

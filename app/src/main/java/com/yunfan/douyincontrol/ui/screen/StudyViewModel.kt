@@ -1,22 +1,28 @@
 package com.yunfan.douyincontrol.ui.screen
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yunfan.douyincontrol.api.AiRepository
+import com.yunfan.douyincontrol.api.AiService
 import com.yunfan.douyincontrol.data.database.entity.QuestionEntity
 import com.yunfan.douyincontrol.data.repository.PointsRepository
 import com.yunfan.douyincontrol.data.repository.QuestionRepository
 import com.yunfan.douyincontrol.data.repository.StudyRepository
 import com.yunfan.douyincontrol.engine.QuizEngine
+import com.yunfan.douyincontrol.ui.screen.settings.ApiConfigKeys
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class StudyViewModel(
     private val questionRepository: QuestionRepository,
     private val pointsRepository: PointsRepository,
     private val studyRepository: StudyRepository,
-    private val quizEngine: QuizEngine
+    private val dataStore: DataStore<Preferences>
 ) : ViewModel() {
 
     private val _currentQuestion = MutableStateFlow<QuestionEntity?>(null)
@@ -53,9 +59,23 @@ class StudyViewModel(
 
     fun startStudy(subject: String, grade: String, questionsList: List<QuestionEntity>? = null) {
         viewModelScope.launch {
-            questions = questionsList ?: quizEngine.getQuestionsForStudy(subject, grade)
+            // 从 DataStore 读取 API 配置，构建带 AI 的引擎
+            val prefs = dataStore.data.first()
+            val apiUrl = prefs[ApiConfigKeys.API_URL] ?: ""
+            val apiKey = prefs[ApiConfigKeys.API_KEY] ?: ""
+            val aiService = AiService(apiUrl, apiKey)
+            val aiRepo = AiRepository(aiService, QuizEngine(questionRepository))
+            val engine = QuizEngine(questionRepository, aiRepo)
+
+            try {
+                questions = questionsList ?: engine.getQuestionsForStudy(subject, grade)
+            } catch (e: com.yunfan.douyincontrol.engine.UnavailableException) {
+                _message.value = e.message ?: "暂无可用题目"
+                _finished.value = true
+                return@launch
+            }
             if (questions.isEmpty()) {
-                _message.value = "题库暂时没有题目，请先在家长设置中生成题目"
+                _message.value = "暂无题目"
                 _finished.value = true
                 return@launch
             }

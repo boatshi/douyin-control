@@ -15,6 +15,13 @@ interface QuestionDao {
     @Query("SELECT * FROM questions WHERE deleted = 0 AND subject = :subject AND grade = :grade LIMIT :limit")
     suspend fun getQuestionsBySubjectAndGradeLimit(subject: String, grade: String, limit: Int): List<QuestionEntity>
 
+    @Query("""
+        SELECT * FROM questions WHERE deleted = 0 AND subject = :subject AND grade = :grade
+        AND id NOT IN (SELECT questionId FROM study_logs WHERE questionId IS NOT NULL)
+        LIMIT :limit
+    """)
+    suspend fun getUnansweredQuestions(subject: String, grade: String, limit: Int): List<QuestionEntity>
+
     @Query("SELECT COUNT(*) FROM questions WHERE deleted = 0 AND subject = :subject AND grade = :grade")
     suspend fun countBySubjectAndGrade(subject: String, grade: String): Int
 

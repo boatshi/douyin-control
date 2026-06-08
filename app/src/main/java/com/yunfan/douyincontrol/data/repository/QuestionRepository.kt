@@ -15,6 +15,9 @@ class QuestionRepository(private val questionDao: QuestionDao) {
     suspend fun getQuestionsForStudy(subject: String, grade: String, limit: Int = 20): List<QuestionEntity> =
         questionDao.getQuestionsBySubjectAndGradeLimit(subject, grade, limit)
 
+    suspend fun getUnansweredQuestions(subject: String, grade: String, limit: Int = 20): List<QuestionEntity> =
+        questionDao.getUnansweredQuestions(subject, grade, limit)
+
     suspend fun countBySubjectAndGrade(subject: String, grade: String): Int =
         questionDao.countBySubjectAndGrade(subject, grade)
 

@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.yunfan.douyincontrol.App
-import com.yunfan.douyincontrol.engine.QuizEngine
+import com.yunfan.douyincontrol.dataStore
 import com.yunfan.douyincontrol.ui.component.QuestionCard
 import com.yunfan.douyincontrol.ui.theme.*
 import kotlinx.coroutines.delay
@@ -25,7 +25,7 @@ import kotlinx.coroutines.delay
 fun StudyScreen(navController: NavController, app: App, subject: String) {
     val gson = remember { Gson() }
     val viewModel = remember {
-        StudyViewModel(app.questionRepository, app.pointsRepository, app.studyRepository, QuizEngine(app.questionRepository))
+        StudyViewModel(app.questionRepository, app.pointsRepository, app.studyRepository, app.dataStore)
     }
     val currentQuestion by viewModel.currentQuestion.collectAsState()
     val currentIndex by viewModel.currentIndex.collectAsState()
