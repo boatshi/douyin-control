@@ -1,0 +1,226 @@
+[
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "3 + 5 = ?",
+    "options": ["A. 6", "B. 7", "C. 8", "D. 9"],
+    "answer": "C. 8"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "10 - 4 = ?",
+    "options": ["A. 4", "B. 5", "C. 6", "D. 7"],
+    "answer": "C. 6"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "2 + 7 = ?",
+    "options": ["A. 8", "B. 9", "C. 10", "D. 11"],
+    "answer": "B. 9"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "8 - 3 = ?",
+    "options": ["A. 3", "B. 4", "C. 5", "D. 6"],
+    "answer": "C. 5"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "4 + 6 = ?",
+    "options": ["A. 9", "B. 10", "C. 11", "D. 12"],
+    "answer": "B. 10"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "7 - 2 = ?",
+    "options": ["A. 3", "B. 4", "C. 5", "D. 6"],
+    "answer": "C. 5"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "1 + 9 = ?",
+    "options": ["A. 8", "B. 9", "C. 10", "D. 11"],
+    "answer": "C. 10"
+  },
+  {
+    "subject": "math",
+    "grade": "bigclass",
+    "question": "6 - 6 = ?",
+    "options": ["A. 0", "B. 1", "C. 6", "D. 12"],
+    "answer": "A. 0"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "15 + 8 = ?",
+    "options": ["A. 21", "B. 22", "C. 23", "D. 24"],
+    "answer": "C. 23"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "30 - 12 = ?",
+    "options": ["A. 16", "B. 17", "C. 18", "D. 19"],
+    "answer": "C. 18"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "7 + 8 = ?",
+    "options": ["A. 13", "B. 14", "C. 15", "D. 16"],
+    "answer": "C. 15"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "25 - 7 = ?",
+    "options": ["A. 16", "B. 17", "C. 18", "D. 19"],
+    "answer": "C. 18"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "12 + 9 = ?",
+    "options": ["A. 19", "B. 20", "C. 21", "D. 22"],
+    "answer": "C. 21"
+  },
+  {
+    "subject": "math",
+    "grade": "grade1",
+    "question": "40 - 15 = ?",
+    "options": ["A. 23", "B. 24", "C. 25", "D. 26"],
+    "answer": "C. 25"
+  },
+  {
+    "subject": "math",
+    "grade": "grade2",
+    "question": "23 + 19 = ?",
+    "options": ["A. 40", "B. 41", "C. 42", "D. 43"],
+    "answer": "C. 42"
+  },
+  {
+    "subject": "math",
+    "grade": "grade2",
+    "question": "56 - 28 = ?",
+    "options": ["A. 26", "B. 27", "C. 28", "D. 29"],
+    "answer": "C. 28"
+  },
+  {
+    "subject": "math",
+    "grade": "grade2",
+    "question": "3 × 4 = ?",
+    "options": ["A. 10", "B. 11", "C. 12", "D. 14"],
+    "answer": "C. 12"
+  },
+  {
+    "subject": "math",
+    "grade": "grade2",
+    "question": "24 ÷ 6 = ?",
+    "options": ["A. 3", "B. 4", "C. 5", "D. 6"],
+    "answer": "B. 4"
+  },
+  {
+    "subject": "math",
+    "grade": "grade2",
+    "question": "45 + 37 = ?",
+    "options": ["A. 80", "B. 81", "C. 82", "D. 83"],
+    "answer": "C. 82"
+  },
+  {
+    "subject": "chinese",
+    "grade": "bigclass",
+    "question": "苹果的'苹'字读音是？",
+    "options": ["A. pín", "B. píng", "C. pǐng", "D. pìng"],
+    "answer": "B. píng"
+  },
+  {
+    "subject": "chinese",
+    "grade": "bigclass",
+    "question": "下列哪个字是上下结构？",
+    "options": ["A. 明", "B. 花", "C. 妈", "D. 林"],
+    "answer": "B. 花"
+  },
+  {
+    "subject": "chinese",
+    "grade": "bigclass",
+    "question": "'大'字共有几画？",
+    "options": ["A. 2", "B. 3", "C. 4", "D. 5"],
+    "answer": "B. 3"
+  },
+  {
+    "subject": "chinese",
+    "grade": "bigclass",
+    "question": "下列哪个字母是声母？",
+    "options": ["A. a", "B. o", "C. b", "D. i"],
+    "answer": "C. b"
+  },
+  {
+    "subject": "chinese",
+    "grade": "bigclass",
+    "question": "'上'字的反义词是什么？",
+    "options": ["A. 大", "B. 小", "C. 下", "D. 左"],
+    "answer": "C. 下"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade1",
+    "question": "下列哪个字是左右结构？",
+    "options": ["A. 花", "B. 草", "C. 明", "D. 苗"],
+    "answer": "C. 明"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade1",
+    "question": "'美丽'的反义词是什么？",
+    "options": ["A. 漂亮", "B. 丑陋", "C. 好看", "D. 帅气"],
+    "answer": "B. 丑陋"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade1",
+    "question": "'春天'是什么季节？",
+    "options": ["A. 一年中最热的季节", "B. 一年中最冷的季节", "C. 一年中花开的季节", "D. 一年中落叶的季节"],
+    "answer": "C. 一年中花开的季节"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade1",
+    "question": "下列哪个词是ABB式词语？",
+    "options": ["A. 高高兴兴", "B. 红彤彤", "C. 明白", "D. 大小"],
+    "answer": "B. 红彤彤"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade2",
+    "question": "'亡羊补牢'这个成语告诉我们什么道理？",
+    "options": ["A. 丢羊后要把羊圈补好", "B. 出了问题要及时补救", "C. 羊跑了就要去追", "D. 羊圈要做得牢固"],
+    "answer": "B. 出了问题要及时补救"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade2",
+    "question": "下列哪个词是描写颜色的？",
+    "options": ["A. 飞快", "B. 五颜六色", "C. 高兴", "D. 温暖"],
+    "answer": "B. 五颜六色"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade2",
+    "question": "'轻轻地'这个词中'地'的读音是？",
+    "options": ["A. dì", "B. de", "C. dī", "D. dí"],
+    "answer": "B. de"
+  },
+  {
+    "subject": "chinese",
+    "grade": "grade2",
+    "question": "'刻舟求剑'告诉我们什么道理？",
+    "options": ["A. 在船上做记号能找到剑", "B. 事物是变化的，不能用老办法", "C. 剑要好好保管", "D. 船跑得很快"],
+    "answer": "B. 事物是变化的，不能用老办法"
+  }
+]

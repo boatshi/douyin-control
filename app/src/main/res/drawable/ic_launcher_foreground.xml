@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 云朵 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,44 C34,36 42,32 48,36 C52,28 66,28 70,36 C76,32 82,38 80,46 C84,48 84,56 78,58 L36,58 C30,56 28,48 34,44Z" />
+
+    <!-- 小星星（云朵左上方） -->
+    <path
+        android:fillColor="#6BCB77"
+        android:pathData="M36,22 L37,26 L41,26 L38,29 L39,33 L36,30 L33,33 L34,29 L31,26 L35,26Z" />
+
+    <!-- 帆船 - 桅杆 -->
+    <path
+        android:fillColor="#8B4513"
+        android:pathData="M54,58 L54,88 L56,88 L56,58Z" />
+
+    <!-- 帆船 - 主帆 -->
+    <path
+        android:fillColor="#FF6B6B"
+        android:pathData="M56,60 L80,74 L56,84Z" />
+
+    <!-- 帆船 - 船身 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,84 L36,82 L54,82 L72,82 L80,84 L72,92 L36,92Z" />
+
+    <!-- 帆船 - 船身装饰线 -->
+    <path
+        android:fillColor="#667EEA"
+        android:pathData="M36,92 L72,92 L80,84 L72,82 L54,82 L36,82 L28,84Z"
+        android:fillAlpha="0.3" />
+
+    <!-- 水波纹 -->
+    <path
+        android:fillColor="#74B9FF"
+        android:pathData="M16,90 Q20,86 24,90 Q28,94 32,90 Q36,86 40,90 Q44,94 48,90 Q52,86 56,90 Q60,94 64,90 Q68,86 72,90 Q76,94 80,90 Q84,86 88,90 Q92,94 96,90"
+        android:strokeWidth="2"
+        android:strokeColor="#74B9FF"
+        android:fillAlpha="0" />
+</vector>
